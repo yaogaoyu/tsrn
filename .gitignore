@@ -1,0 +1,17 @@
+*
+
+!android/
+!include/
+!ios/
+!lib/
+!node_modules/
+!var/
+
+!.gitignore
+!Gulpfile.js
+!index.android.js
+!index.ios.js
+!package.json
+!tsconfig.json
+!tsd.json
+!tslint.json
