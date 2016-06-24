@@ -1,0 +1,21 @@
+{
+    "name": "tsrn",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "build": "gulp build",
+        "watch": "gulp watch",
+        "start": "concurrently \"npm run watch\" \"node node_modules/react-native/local-cli/cli.js start\" ",
+        "android": "adb reverse tcp:8081 tcp:8081 && node node_modules/react-native/local-cli/cli.js run-android",
+        "ios": "node node_modules/react-native/local-cli/cli.js run-ios"
+    },
+    "dependencies": {
+        "react": "15.1.0",
+        "react-native": "0.28.0"
+    },
+    "devDependencies": {
+        "gulp": "^3.9.1",
+        "gulp-typescript": "^2.12.1",
+        "typescript": "^1.8.9"
+    }
+}
