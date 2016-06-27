@@ -5,7 +5,7 @@
     "scripts": {
         "build": "gulp build",
         "watch": "gulp watch",
-        "start": "concurrently \"npm run watch\" \"node node_modules/react-native/local-cli/cli.js start\" ",
+        "start": "node node_modules/react-native/local-cli/cli.js start",
         "android": "adb reverse tcp:8081 tcp:8081 && node node_modules/react-native/local-cli/cli.js run-android",
         "ios": "node node_modules/react-native/local-cli/cli.js run-ios"
     },
@@ -14,7 +14,6 @@
         "react-native": "0.28.0"
     },
     "devDependencies": {
-        "concurrently": "^2.0.0",
         "del": "^2.2.0",
         "typescript": "^1.8.9",
         "gulp": "^3.9.1",
