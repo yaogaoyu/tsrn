@@ -14,8 +14,11 @@
         "react-native": "0.28.0"
     },
     "devDependencies": {
+        "concurrently": "^2.0.0",
+        "del": "^2.2.0",
+        "typescript": "^1.8.9",
         "gulp": "^3.9.1",
         "gulp-typescript": "^2.12.1",
-        "typescript": "^1.8.9"
+        "gulp-tslint": "^4.3.2"
     }
 }

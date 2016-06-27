@@ -4,7 +4,7 @@ import * as React from 'react';
 import Application from './Application';
 export class Main extends React.Component<any, any> {
 
-    public render() {
+    public render(): JSX.Element {
         return (
             <Application />
         );

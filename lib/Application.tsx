@@ -3,7 +3,7 @@
 import * as React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 
-const styles = StyleSheet.create({
+const styles: any = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
@@ -11,8 +11,8 @@ const styles = StyleSheet.create({
     }
 });
 
-export class Application extends React.Component<any, any> {
-    public render() {
+export default class Application extends React.Component<any, any> {
+    public render(): JSX.Element {
         return (
             <View style={styles.container}>
                 <Text>
@@ -22,5 +22,3 @@ export class Application extends React.Component<any, any> {
         );
     }
 }
-
-export default Application;
