@@ -7,11 +7,8 @@
 
 !.gitignore
 !Gulpfile.js
-!index.android.js
 !index.android.js.dist
-!index.ios.js
 !index.ios.js.dist
-!package.json
 !package.json.dist
 !tsconfig.json
 !tsd.json
