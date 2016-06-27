@@ -6,7 +6,11 @@
 
 > 初始化react-native
 >> react-native init \<Project Name\>
+
+
 > 将此项目中的文件拷贝到项目所在目录
+
+
 >> index.android.js.dist 改名并覆盖原有 index.android.js
 
 
