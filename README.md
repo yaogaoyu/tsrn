@@ -2,10 +2,10 @@
 
 ##项目名tsrn = typescript + react-native
 
-###此项目为typescript + react-native开发框架，react-native请自行初始化
+> 此项目为typescript + react-native开发框架，react-native请自行初始化
 
 > 初始化react-native
-> react-native init \<Project Name\>
+>> react-native init \<Project Name\>
 > 将此项目中的文件拷贝到项目所在目录
 >> index.android.js.dist 改名并覆盖原有 index.android.js
 
