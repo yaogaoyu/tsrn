@@ -21,5 +21,9 @@
 
 ## 运行
 > npm start 启动调试cli服务器
+
+
 > npm run ios 启动调试cli服务器并启动Iphone模拟器
+
+
 > gulp watch 开发模式 - 修改文件即重新编译
