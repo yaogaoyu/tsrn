@@ -1,8 +1,6 @@
 *
 
-!android/
 !include/
-!ios/
 !lib/
 !node_modules/
 !var/
@@ -10,8 +8,13 @@
 !.gitignore
 !Gulpfile.js
 !index.android.js
+!index.android.js.dist
 !index.ios.js
+!index.ios.js.dist
+!package.json
+!package.json.dist
 !package.json
 !tsconfig.json
 !tsd.json
 !tslint.json
+!README.md
