@@ -1,6 +1,6 @@
 'use strict'
 
 import { AppRegistry } from 'react-native'
-import { Main } from './var/build'
+import { Application } from './var/build/app'
 
-AppRegistry.registerComponent('tsrn', () => Main)
+AppRegistry.registerComponent('tsrn', () => Application)

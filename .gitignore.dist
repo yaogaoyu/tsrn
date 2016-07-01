@@ -6,6 +6,7 @@
 !var/
 
 !.gitignore
+!.gitignore.dist
 !Gulpfile.js
 !index.android.js.dist
 !index.ios.js.dist

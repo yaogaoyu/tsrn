@@ -1,14 +1,17 @@
 {
     "compilerOptions": {
+        "module": "commonjs",
+        "newLine": "LF",
         "target": "es6",
-        "jsx": "react",
         "noImplicitAny": true,
-        "experimentalDecorators": true,
-        "preserveConstEnums": true,
-        "outDir": "var/build",
-        "rootDir": "lib",
-        "sourceMap": true
+        "suppressImplicitAnyIndexErrors": true,
+        "outFile": "var/build/app.js",
+        "sourceMap": false,
+        "jsx": "react"
     },
+    "files": [
+        "lib/Application.tsx"
+    ],
     "exclude": [
         "node_modules"
     ]

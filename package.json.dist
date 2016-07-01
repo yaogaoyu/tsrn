@@ -1,6 +1,8 @@
 {
     "name": "tsrn",
+    "main": "app",
     "version": "0.0.1",
+    "description": "Typescript + React-native 开发环境生成工具。",
     "private": true,
     "scripts": {
         "build": "gulp build",
@@ -14,10 +16,20 @@
         "react-native": "0.28.0"
     },
     "devDependencies": {
+        "concurrently": "^2.0.0",
         "del": "^2.2.0",
         "typescript": "^1.8.9",
         "gulp": "^3.9.1",
         "gulp-typescript": "^2.12.1",
-        "gulp-tslint": "^4.3.2"
-    }
+        "gulp-tslint": "^4.3.2",
+        "gulp-insert": "^0.5.0",
+        "gulp-replace": "^0.5.4",
+        "gulp-copy": "^0.0.2",
+        "gulp-sourcemaps": "^1.6.0",
+        "gulp-uglify": "^1.5.3",
+        "vinyl-buffer": "^1.0.0",
+        "vinyl-source-stream": "^1.1.0"
+    },
+    "author": "姚尧 <yyao@atfacg.com>",
+    "license": "GPL-3.0"
 }
