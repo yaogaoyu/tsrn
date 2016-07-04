@@ -6,8 +6,6 @@ var $gulp = require('gulp'),
     $replace = require('gulp-replace'),
     $uglify = require('gulp-uglify'),
     $del = require('del'),
-    $source = require('vinyl-source-stream'),
-    $buffer = require('vinyl-buffer'),
     pkg = require('./package.json');
 
 var src = {
@@ -27,63 +25,75 @@ var replace = {
 };
 
 var dst = {
-    _: 'var/build'
+    _: 'var/build',
+    js: 'app.js'
 };
-dst.js = dst._ + "/" + pkg.main + ".js";
 
+/**
+ * 清除编译目录下的所有文件。
+ */
 $gulp.task('clear', function () {
     $del(dst._ + '/*');
 });
 
+/**
+ * typescript代码检查。
+ */
 $gulp.task('ts:lint', function() {
     return $gulp.src(src.ts)
         .pipe($lint())
         .pipe($lint.report('prose'));
 });
 
-// var tsProject = $tsc.createProject('tsconfig.json', {
-//     outDir: dst._,
-//     rootDir: "lib"
-// });
-// $gulp.task('ts:compile', ['ts:lint'], function() {
-//     return $gulp.src(src.ts)
-//         .pipe($tsc(tsProject))
-//         .pipe($gulp.dest(dst._));
-// });
-
+/**
+ * typescript代码编译。
+ */
 $gulp.task('ts:compile', function () {
     var ts = $gulp.src(src.js)
-        .pipe($smap.init())
         .pipe($tsc($tsc.createProject('tsconfig.json', {
-            outFile: pkg.main + '.js',
+            outFile: dst.js,
             typescript: require('typescript')
         })));
     return ts.js
-        .pipe($insert.prepend("import ReactNative from 'react-native';\n"))
-        .pipe($insert.prepend("import * as React from 'react';\n"))
-        .pipe($insert.append('export default Application;'))
-        .pipe($replace(new RegExp(replace.export.regex), replace.export.replacement))
+        // .pipe($insert.prepend("import ReactNative from 'react-native';\n"))              // ES6
+        // .pipe($insert.prepend("import * as React from 'react';\n"))                      // ES6
+        // .pipe($insert.append('export default Application;'))                             // ES6
+        // .pipe($replace(new RegExp(replace.export.regex), replace.export.replacement))    // ES6
+        .pipe($insert.prepend("var ReactNative = require('react-native');\n"))              // ES3
+        .pipe($insert.prepend("var React = require('react');\n"))                           // ES3
+        .pipe($insert.append("module.exports = {'Application': Application};"))             // ES3
         .pipe($replace(new RegExp(replace.import.regex, "g"), replace.import.replacement))
         .pipe($replace(/\$\{VERSION\}/, pkg.version))
-        .pipe($smap.write('.'))
         .pipe($gulp.dest(dst._));
 });
 
+/**
+ * 打包 - 调试模式。
+ */
 $gulp.task('ts:debug', ['ts:lint', 'ts:compile']);
 
-// $gulp.task('ts', ['ts:lint', 'ts:compile'], function () {
-//     return $gulp.src("var/build/app.js")
-//         .pipe($source("app.min.js"))
-//         .pipe($buffer())
-//         .pipe($smap.init({
-//             loadMaps: true
-//         }))
-//         .pipe($uglify())
-//         .pipe($smap.write('.'))
-//         .pipe($gulp.dest(dst._));
-// });
+/**
+ * 打包 - 生产模式。
+ */
+$gulp.task('ts', ['ts:lint', 'ts:compile'], function (cb) {
+    return $gulp.src("var/build/app.js")
+        .pipe($smap.init({
+            loadMaps: true
+        }))
+        .pipe($uglify())
+        .pipe($smap.write('.'))
+        .pipe($gulp.dest(dst._));
+    // $pump([
+    //     $gulp.src('var/build/app.js'),
+    //     $uglify(),
+    //     $gulp.dest(dst._)
+    // ], cb);
 
-// Auto compile
+});
+
+/**
+ * 开发调试模式，可监控代码改动自动进行调试模式打包。
+ */
 $gulp.task('watch', function() {
-    $gulp.watch(src.ts, ['ts:compile']);
+    $gulp.watch(src.ts, ['ts:debug']);
 });

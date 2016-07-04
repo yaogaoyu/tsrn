@@ -2,7 +2,7 @@
     "compilerOptions": {
         "module": "commonjs",
         "newLine": "LF",
-        "target": "es6",
+        "target": "es3",
         "noImplicitAny": true,
         "suppressImplicitAnyIndexErrors": true,
         "outFile": "var/build/app.js",
