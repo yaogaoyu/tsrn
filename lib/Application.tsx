@@ -35,15 +35,20 @@ class Application extends View.View<Core.IProps, Core.IState> {
      * IOS渲染方法。
      */
     public iosRender(): JSX.Element {
-        return (
-            <View.Index />
-        );
+        return this.appRender();
     }
 
     /**
      * Android渲染方法。
      */
     public androidRender(): JSX.Element {
+        return this.appRender();
+    }
+
+    /**
+     * 渲染方法。
+     */
+    private appRender(): JSX.Element {
         return (
             <View.Index />
         );

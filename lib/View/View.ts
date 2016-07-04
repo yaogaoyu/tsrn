@@ -16,8 +16,13 @@ namespace View {
             return Application.device() === "ios" ? this.iosRender() : this.androidRender();
         }
 
+        /**
+         * IOS系统渲染方法。
+         */
         protected abstract iosRender(): JSX.Element;
-
+        /**
+         * Android系统渲染方法。
+         */
         protected abstract androidRender(): JSX.Element;
     }
 }

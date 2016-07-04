@@ -32,7 +32,7 @@ namespace View {
         }
 
         /**
-         * 渲染方法。
+         * IOS系统渲染方法。
          */
         public iosRender(): JSX.Element {
             return (
@@ -45,7 +45,7 @@ namespace View {
         }
 
         /**
-         * 渲染方法。
+         * Android系统渲染方法。
          */
         public androidRender(): JSX.Element {
             return (
