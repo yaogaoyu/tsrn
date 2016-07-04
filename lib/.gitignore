@@ -1,10 +1,6 @@
 *.*
 
-!Core/
-!Runtime/
-!Util/
-!View/
-
 !.gitignore
+
 !*.ts
 !*.tsx
