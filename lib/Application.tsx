@@ -17,11 +17,36 @@ class Application extends View.View<Core.IProps, Core.IState> {
     public static version: string = '${VERSION}';
 
     /**
-     * 渲染方法。。
+     * 当前设备。
      */
-    public render(): JSX.Element {
+    private static d: string = '';
+
+    /**
+     * 设置/获取当前设备。
+     */
+    public static device(d?: string): string {
+        if (d != undefined && d != null) {
+            Application.d = d;
+        }
+        return Application.d;
+    }
+
+    /**
+     * IOS渲染方法。
+     */
+    public iosRender(): JSX.Element {
         return (
             <View.Index />
         );
     }
+
+    /**
+     * Android渲染方法。
+     */
+    public androidRender(): JSX.Element {
+        return (
+            <View.Index />
+        );
+    }
+
 }

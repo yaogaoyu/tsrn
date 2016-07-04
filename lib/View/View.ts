@@ -8,8 +8,16 @@
  */
 
 /// <reference path="../Core/_View/IView.ts" />
+/// <reference path="../Application.tsx" />
 
 namespace View {
-    export class View<P extends Core.IProps, S extends Core.IState> extends React.Component<P, S> implements Core.IView {
+    export abstract class View<P extends Core.IProps, S extends Core.IState> extends React.Component<P, S> implements Core.IView {
+        public render(): JSX.Element {
+            return Application.device() === "ios" ? this.iosRender() : this.androidRender();
+        }
+
+        protected abstract iosRender(): JSX.Element;
+
+        protected abstract androidRender(): JSX.Element;
     }
 }

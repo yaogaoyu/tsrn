@@ -32,13 +32,26 @@ namespace View {
         }
 
         /**
-         * 渲染方法。。
+         * 渲染方法。
          */
-        public render(): JSX.Element {
+        public iosRender(): JSX.Element {
             return (
                 <ReactNative.View style={this.styles.container}>
                     <ReactNative.Text>
-                        (Typescript + React Native) Demo - Index
+                        (Typescript + React Native) Demo - IOS
+                    </ReactNative.Text>
+                </ReactNative.View>
+            );
+        }
+
+        /**
+         * 渲染方法。
+         */
+        public androidRender(): JSX.Element {
+            return (
+                <ReactNative.View style={this.styles.container}>
+                    <ReactNative.Text>
+                        (Typescript + React Native) Demo - ANDROID
                     </ReactNative.Text>
                 </ReactNative.View>
             );
