@@ -74,6 +74,7 @@ $gulp.task('ts:debug', ['ts:lint', 'ts:compile']);
 
 /**
  * 打包 - 生产模式。
+ * uglify尚不支持ES6代码进行压缩。
  */
 $gulp.task('ts', ['ts:lint', 'ts:compile'], function (cb) {
     return $gulp.src("var/build/app.js")
