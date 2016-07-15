@@ -12,6 +12,9 @@
 
 namespace View {
     export abstract class View<P extends Core.IProps, S extends Core.IState> extends React.Component<P, S> implements Core.IView {
+        /**
+         * 主渲染方法。
+         */
         public render(): JSX.Element {
             return Application.device() === "ios" ? this.iosRender() : this.androidRender();
         }

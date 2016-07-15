@@ -6,11 +6,17 @@ var $gulp = require('gulp'),
     $replace = require('gulp-replace'),
     $uglify = require('gulp-uglify'),
     $del = require('del'),
+    $shell = require('gulp-shell'),
     pkg = require('./package.json');
 
 var src = {
     ts: 'lib/**/*.{ts,tsx}',
-    js: 'lib/Application.tsx'
+    js: 'lib/Application.tsx',
+    img: ['share/image/*.{png,jpg}'],
+    ios: {
+        appDelegate: 'ios/' + pkg.name + '/AppDelegate.m',
+    }
+
 };
 
 var replace = {
@@ -24,8 +30,10 @@ var replace = {
     }
 };
 
+var _ = 'var/build';
 var dst = {
-    _: 'var/build',
+    _: _,
+    ios: 'ios/bundle',
     js: 'app.js'
 };
 
@@ -34,6 +42,8 @@ var dst = {
  */
 $gulp.task('clear', function () {
     $del(dst._ + '/*');
+    $del(dst.ios);
+    $del(dst._ + '/.assets');
 });
 
 /**
@@ -73,10 +83,10 @@ $gulp.task('ts:compile', function () {
 $gulp.task('ts:debug', ['ts:lint', 'ts:compile']);
 
 /**
- * 打包 - 生产模式。
+ * 打包JS代码 - 生产模式。
  * uglify尚不支持ES6代码进行压缩。
  */
-$gulp.task('ts', ['ts:lint', 'ts:compile'], function (cb) {
+$gulp.task('bundle:js', ['ts:lint', 'ts:compile'], function (cb) {
     return $gulp.src("var/build/app.js")
         .pipe($smap.init({
             loadMaps: true
@@ -84,11 +94,54 @@ $gulp.task('ts', ['ts:lint', 'ts:compile'], function (cb) {
         .pipe($uglify())
         .pipe($smap.write('.'))
         .pipe($gulp.dest(dst._));
-    // $pump([
-    //     $gulp.src('var/build/app.js'),
-    //     $uglify(),
-    //     $gulp.dest(dst._)
-    // ], cb);
+});
+
+/**
+ * 将image资源放入预打包环境 - 生产模式
+ */
+$gulp.task('bundle:image', function () {
+    return $gulp.src(src.img)
+        .pipe($gulp.dest(dst.bundle + '/image'));
+});
+
+/**
+ * 预构建APP所需资源
+ */
+$gulp.task('bundle', ['bundle:image', 'bundle:js']);
+
+/**
+ * 建立APP资源目录指令
+ */
+var mkdirCmd = 'mkdir -p ios/bundle';
+/**
+ * 打包APP所需资源指令
+ */
+var bundleCmd = 'react-native bundle --entry-file index.ios.js --bundle-output ios/bundle/app.jsbundle --platform ios --assets-dest ios/bundle --dev false';
+/**
+ * IOS打包 - 生产模式
+ */
+$gulp.task('bundle:ios', ['bundle'], $shell.task([mkdirCmd, bundleCmd]));
+
+
+$gulp.task('bundle:android', ['bundle'], function(){
+    ''
+});
+
+/**
+ * 打包成IOS APP。
+ */
+$gulp.task('package:ios', ['bundle:ios'], function() {
+    var originalConf = 'ios/' + pkg.name + '/AppDelegate.m';
+    var onlineReg = /^(  jsCodeLocation = \[NSURL URLWithString:@.+;)$/m;
+    var offlineReg = /^\/\/\s+(jsCodeLocation = \[\[NSBundle mainBundle.+;)$/m;
+    var resourceURL = /(URLForResource:@)"main"/;
+    // replace AppDelegate.m内的
+    return $gulp.src(originalConf)
+        .pipe($shell(['cp ' + src.ios.appDelegate + ' ' + src.ios.appDelegate + '.ori']))
+        .pipe($replace(onlineReg, '//$1'))
+        .pipe($replace(offlineReg, '  $1'))
+        .pipe($replace(resourceURL, '$1"app"'))
+        .pipe($gulp.dest('ios/' + pkg.name));
 
 });
 
