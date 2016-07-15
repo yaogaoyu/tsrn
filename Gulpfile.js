@@ -15,6 +15,9 @@ var src = {
     img: ['share/image/*.{png,jpg}'],
     ios: {
         appDelegate: 'ios/' + pkg.name + '/AppDelegate.m',
+    },
+    android: {
+        build: 'android/app/build.gradle',
     }
 
 };
@@ -34,6 +37,7 @@ var _ = 'var/build';
 var dst = {
     _: _,
     ios: 'ios/bundle',
+    android: ['android/app/src/main/assets', 'android/app/src/main/res/drawable-*'],
     js: 'app.js'
 };
 
@@ -43,7 +47,7 @@ var dst = {
 $gulp.task('clear', function () {
     $del(dst._ + '/*');
     $del(dst.ios);
-    $del(dst._ + '/.assets');
+    $del(dst.android);
 });
 
 /**
@@ -110,39 +114,55 @@ $gulp.task('bundle:image', function () {
 $gulp.task('bundle', ['bundle:image', 'bundle:js']);
 
 /**
- * 建立APP资源目录指令
+ * IOS建立APP资源目录指令
  */
-var mkdirCmd = 'mkdir -p ios/bundle';
+var iosMkdirCmd = 'mkdir -p ios/bundle';
 /**
- * 打包APP所需资源指令
+ * IOS打包APP所需资源指令
  */
-var bundleCmd = 'react-native bundle --entry-file index.ios.js --bundle-output ios/bundle/app.jsbundle --platform ios --assets-dest ios/bundle --dev false';
+var iosBundleCmd = 'react-native bundle --entry-file index.ios.js --bundle-output ios/bundle/app.jsbundle --platform ios --assets-dest ios/bundle --dev false';
 /**
  * IOS打包 - 生产模式
  */
-$gulp.task('bundle:ios', ['bundle'], $shell.task([mkdirCmd, bundleCmd]));
+$gulp.task('bundle:ios', ['bundle'], $shell.task([iosMkdirCmd, iosBundleCmd]));
 
-
-$gulp.task('bundle:android', ['bundle'], function(){
-    ''
-});
+/**
+ * Android建立APP资源目录指令
+ */
+var androidMkdirCmd = 'mkdir android/app/src/main/assets';
+/**
+ * Android打包APP所需资源指令
+ */
+var androidBundleCmd = 'react-native bundle --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --platform android --assets-dest android/app/src/main/res --dev false';
+/**
+ * Android打包 - 生产模式
+ */
+$gulp.task('bundle:android', ['bundle'], $shell.task([androidMkdirCmd, androidBundleCmd]));
 
 /**
  * 打包成IOS APP。
  */
 $gulp.task('package:ios', ['bundle:ios'], function() {
-    var originalConf = 'ios/' + pkg.name + '/AppDelegate.m';
     var onlineReg = /^(  jsCodeLocation = \[NSURL URLWithString:@.+;)$/m;
     var offlineReg = /^\/\/\s+(jsCodeLocation = \[\[NSBundle mainBundle.+;)$/m;
     var resourceURL = /(URLForResource:@)"main"/;
     // replace AppDelegate.m内的
-    return $gulp.src(originalConf)
+    return $gulp.src(src.ios.appDelegate)
         .pipe($shell(['cp ' + src.ios.appDelegate + ' ' + src.ios.appDelegate + '.ori']))
         .pipe($replace(onlineReg, '//$1'))
         .pipe($replace(offlineReg, '  $1'))
         .pipe($replace(resourceURL, '$1"app"'))
         .pipe($gulp.dest('ios/' + pkg.name));
+});
 
+/**
+ * 打包成IOS APP。
+ */
+$gulp.task('package:android', ['bundle:android'], function() {
+    var proguardReg = /^(def enableProguardInReleaseBuilds = ).*$/m;
+    return $gulp.src(src.android.build)
+        .pipe($replace(proguardReg, '$1true'))
+        .pipe($gulp.dest('android/app'));
 });
 
 /**

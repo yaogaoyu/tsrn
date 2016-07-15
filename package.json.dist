@@ -1,6 +1,5 @@
 {
     "name": "tsrn",
-    "main": "app",
     "version": "0.0.1",
     "description": "Typescript + React-native 开发环境生成工具。",
     "private": true,
