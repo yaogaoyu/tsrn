@@ -4,6 +4,7 @@
 !lib/
 !node_modules/
 !var/
+!share/
 
 !.gitignore
 !.gitignore.dist
