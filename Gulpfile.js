@@ -38,7 +38,21 @@ var dst = {
     _: _,
     ios: 'ios/bundle',
     android: ['android/app/src/main/assets', 'android/app/src/main/res/drawable-*'],
-    js: 'app.js'
+    js: 'app.js',
+    img: 'image'
+};
+
+var resetIos = function(){
+    var onlineReg = /^\/\/(  jsCodeLocation = \[NSURL URLWithString:@.+;)$/m;
+    var offlineReg = /^  (jsCodeLocation = \[\[NSBundle mainBundle.+;)$/m;
+    var resourceURL = /(URLForResource:@)"app"/;
+    // replace AppDelegate.m内的
+    return $gulp.src(src.ios.appDelegate)
+        .pipe($shell(['cp ' + src.ios.appDelegate + ' ' + src.ios.appDelegate + '.ori']))
+        .pipe($replace(onlineReg, '$1'))
+        .pipe($replace(offlineReg, '//  $1'))
+        .pipe($replace(resourceURL, '$1"main"'))
+        .pipe($gulp.dest('ios/' + pkg.name));
 };
 
 /**
@@ -48,6 +62,8 @@ $gulp.task('clear', function () {
     $del(dst._ + '/*');
     $del(dst.ios);
     $del(dst.android);
+    $del(dst.img);
+    resetIos();
 });
 
 /**
@@ -103,16 +119,25 @@ $gulp.task('bundle:js', ['ts:lint', 'ts:compile'], function (cb) {
 /**
  * 将image资源放入预打包环境 - 生产模式
  */
-$gulp.task('bundle:image', function () {
+$gulp.task('bundle:img', function () {
     return $gulp.src(src.img)
-        .pipe($gulp.dest(dst.bundle + '/image'));
+        .pipe($gulp.dest(dst.img));
 });
 
 /**
  * 预构建APP所需资源
  */
-$gulp.task('bundle', ['bundle:image', 'bundle:js']);
+$gulp.task('bundle', ['bundle:js']);
 
+/**
+ * 预构建调试模式下APP所需资源
+ */
+$gulp.task('bundle:debug', ['bundle', 'bundle:img']);
+
+/**
+ * 建立图片资源软链接供React-native创建APP内资源目录
+ */
+var iosImgLinkCmd = 'ln -s share/image ' + dst.img;
 /**
  * IOS建立APP资源目录指令
  */
@@ -124,7 +149,7 @@ var iosBundleCmd = 'react-native bundle --entry-file index.ios.js --bundle-outpu
 /**
  * IOS打包 - 生产模式
  */
-$gulp.task('bundle:ios', ['bundle'], $shell.task([iosMkdirCmd, iosBundleCmd]));
+$gulp.task('bundle:ios', ['bundle'], $shell.task([iosImgLinkCmd, iosMkdirCmd, iosBundleCmd]));
 
 /**
  * Android建立APP资源目录指令
@@ -168,6 +193,7 @@ $gulp.task('package:android', ['bundle:android'], function() {
 /**
  * 开发调试模式，可监控代码改动自动进行调试模式打包。
  */
-$gulp.task('watch', function() {
-    $gulp.watch(src.ts, ['ts:debug']);
+$gulp.task('watch:ios', function() {
+    $gulp.watch([src.ts, src.js], ['bundle:debug']);
+    $gulp.watch(src.img, ['bundle:debug']);
 });

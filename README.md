@@ -20,7 +20,7 @@
 >> package.json.dist 改名并覆盖原有 package.json
 
 
-##安装依赖包
+## 安装依赖包
 > npm i --save
 
 ## 运行
@@ -31,6 +31,18 @@
 
 
 > gulp watch 开发模式 - 修改文件即重新编译
+
+
+## 调试（debug）模式
+> IOS
+
+`gulp clear && gulp bundle:debug && npm run ios`
+
+如果打过离线包再进入调试模式，先执行gulp clear，再使用xcode打开ios下的工程文件，在xcode中删除之前添加的ios/bundle/app.jsbundle文件和ios/bundle/assets目录的引用后执行上面的指令。
+
+> Android
+
+``
 
 ## 打离线包
 > IOS

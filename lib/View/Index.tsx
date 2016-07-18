@@ -40,6 +40,7 @@ namespace View {
                     <ReactNative.Text>
                         (Typescript + React Native) Demo - IOS
                     </ReactNative.Text>
+                    <ReactNative.Image source={require('../../image/personal.jpg')} />
                 </ReactNative.View>
             );
         }
