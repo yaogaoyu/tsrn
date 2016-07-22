@@ -132,7 +132,7 @@ $gulp.task('bundle', ['bundle:js']);
 /**
  * 预构建调试模式下APP所需资源
  */
-$gulp.task('bundle:debug', ['bundle', 'bundle:img']);
+$gulp.task('bundle:debug', ['ts:debug', 'bundle:img']);
 
 /**
  * 建立图片资源软链接供React-native创建APP内资源目录

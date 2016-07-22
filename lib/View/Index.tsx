@@ -8,6 +8,7 @@
  */
 
  /// <reference path="View.ts" />
+ /// <reference path="Controls.tsx" />
 
 namespace View {
 
@@ -40,6 +41,11 @@ namespace View {
                     <ReactNative.Text>
                         (Typescript + React Native) Demo - IOS
                     </ReactNative.Text>
+                    <ReactNative.Text onPress={() => {
+                         this.toControls('31d653ae-02dc-11e6-b30d-00e07005747f', null);
+                     }}>
+                        Click to Controls.
+                    </ReactNative.Text>
                     <ReactNative.Image source={require('../../image/personal.jpg')} />
                 </ReactNative.View>
             );
@@ -56,6 +62,20 @@ namespace View {
                     </ReactNative.Text>
                 </ReactNative.View>
             );
+        }
+
+        /*
+         * 点击跳转到播放器页面
+         */
+        private toControls(id: string, nav: any): void {
+            this.props.nav.push({
+                name: "Controls",
+                component: Controls,
+                params: {
+                    title: "播放器",
+                    portrait: false
+                }
+            });
         }
     }
 }

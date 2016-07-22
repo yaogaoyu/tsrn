@@ -9,6 +9,10 @@
 
 /// <reference path="../include/tsd.d.ts" />
 /// <reference path="View/Index.tsx" />
+/// <reference path="Core/_View/IView.ts" />
+
+import ReactNative = __React;
+import ReactNavigator = ReactNative.Navigator;
 
 class Application extends View.View<Core.IProps, Core.IState> {
     /**
@@ -50,7 +54,24 @@ class Application extends View.View<Core.IProps, Core.IState> {
      */
     private appRender(): JSX.Element {
         return (
-            <View.Index />
+            <ReactNavigator
+                initialRoute={{ name: '首页', component: View.Index}}
+                renderScene={(route: ReactNative.Route, navigator: any) => {
+                    // let comp: any = route.component;
+                    let params: Util.IHashTable<any> = route['params'] || {};
+                    let $Orientation: any = require('react-native-orientation');
+                    let isPortraint: boolean = params['portrait'] == undefined || params['portrait'];
+                    console.log(params['portrait']);
+                    if (isPortraint) {
+                        $Orientation.lockToPortrait();
+                        // $Orientation.unlockAllOrientations();
+                    } else {
+                        $Orientation.lockToLandscape();
+                    }
+                    return <route.component params={params} nav={navigator} />;
+                }
+                }
+            />
         );
     }
 

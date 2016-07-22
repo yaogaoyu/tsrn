@@ -13,5 +13,6 @@
 
 namespace Core {
     export interface IView extends React.Component<IProps, IState> {
+        render(): JSX.Element;
     }
 }

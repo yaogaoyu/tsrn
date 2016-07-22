@@ -16,5 +16,9 @@ namespace Core {
          * 关联业务流。
          */
         flow?: IFlow;
+
+        params?: any;
+
+        nav?: any;
     }
 }
