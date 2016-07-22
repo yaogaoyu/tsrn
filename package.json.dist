@@ -11,8 +11,9 @@
         "ios": "node node_modules/react-native/local-cli/cli.js run-ios"
     },
     "dependencies": {
-        "react": "15.1.0",
-        "react-native": "0.28.0"
+        "react": "^15.1.0",
+        "react-native": "^0.28.0",
+        "react-native-orientation": "^1.17.0"
     },
     "devDependencies": {
         "del": "^2.2.0",

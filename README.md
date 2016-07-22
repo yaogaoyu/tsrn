@@ -33,24 +33,32 @@
 > gulp watch 开发模式 - 修改文件即重新编译
 
 
-## 调试（debug）模式
-> IOS
+## 调试（ dev 或 debug ）模式
+> ### IOS
 
-`gulp clear && gulp bundle:debug && npm run ios`
+1. 开发环境
 
-如果打过离线包再进入调试模式，先执行gulp clear，再使用xcode打开ios下的工程文件，在xcode中删除之前添加的ios/bundle/app.jsbundle文件和ios/bundle/assets目录的引用后执行上面的指令。
+    使用以下指令来运行Demo，开发过程中也可以单独使用。
+    `gulp clear && gulp bundle:debug && npm run ios`
 
-*iOS9把所有的http请求都改为https了：iOS9系统发送的网络请求将统一使用TLS 1.2 SSL。采用TLS 1.2 协议，目的是 强制增强数据访问安全，而且 系统 Foundation 框架下的相关网络请求，将不再默认使用 Http 等不安全的网络协议，而默认采用 TLS 1.2。服务器因此需要更新，以解析相关数据。如不更新，可通过在 Info.plist 中声明，倒退回不安全的网络请求，配置如下。*
+    如果打过离线包再进入调试模式，先执行gulp clear，再使用xcode打开ios下的工程文件，在xcode中删除之前添加的ios/bundle/app.jsbundle文件和ios/bundle/assets目录的引用后执行上面的指令。
 
-```
+    *IOS9把所有的http请求都改为https了：IOS9系统发送的网络请求将统一使用TLS 1.2 SSL。采用TLS 1.2 协议，目的是 强制增强数据访问安全，而且 系统 Foundation 框架下的相关网络请求，将不再默认使用 Http 等不安全的网络协议，而默认采用 TLS 1.2。服务器因此需要更新，以解析相关数据。如不更新，可通过在 Info.plist 中声明，倒退回不安全的网络请求，配置如下。*
+
+    ```
     <key>NSAppTransportSecurity</key>
     <dict>
         <key>NSAllowsArbitraryLoads</key>
         <true/>
     </dict>
-```
+    ```
 
-> Android
+2. 第三方包配置:
+
+    加入了横竖屏控制第三方包：[react-native-orientation](https://github.com/yamill/react-native-orientation)
+
+
+> ###Android
 
 ``
 
