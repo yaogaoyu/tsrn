@@ -73,6 +73,7 @@ namespace View {
                 component: Controls,
                 params: {
                     title: "播放器",
+                    work: id,
                     portrait: false
                 }
             });
